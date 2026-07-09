@@ -1,8 +1,12 @@
-import { NextResponse } from "next/server";
+import {
+  NextResponse
+} from "next/server";
+
 
 import type {
   NextRequest
 } from "next/server";
+
 
 
 
@@ -29,37 +33,20 @@ export function middleware(
   // 登录页面
   // =====================
 
-  // 永远允许访问登录页
-  // 不自动跳转
-
   if(
+
     pathname === "/login"
-  ){
 
-    return NextResponse.next();
+    &&
 
-  }
+    user
 
-
-
-
-
-
-  // =====================
-  // 首页
-  // =====================
-
-  // 访问首页
-  // 进入登录页
-
-  if(
-    pathname === "/"
   ){
 
     return NextResponse.redirect(
 
       new URL(
-        "/login",
+        "/tasks",
         request.url
       )
 
@@ -72,16 +59,15 @@ export function middleware(
 
 
 
-
   // =====================
-  // 任务页面保护
+  // 任务页面
   // =====================
-
-  // 没登录不能进入任务
 
   if(
 
-    pathname.startsWith("/tasks")
+    pathname.startsWith(
+      "/tasks"
+    )
 
     &&
 
@@ -89,7 +75,6 @@ export function middleware(
 
   ){
 
-
     return NextResponse.redirect(
 
       new URL(
@@ -99,6 +84,38 @@ export function middleware(
 
     );
 
+  }
+
+
+
+
+
+
+
+  // =====================
+  // 管理后台
+  // =====================
+
+  if(
+
+    pathname.startsWith(
+      "/admin"
+    )
+
+    &&
+
+    !user
+
+  ){
+
+    return NextResponse.redirect(
+
+      new URL(
+        "/login",
+        request.url
+      )
+
+    );
 
   }
 
@@ -117,8 +134,6 @@ export function middleware(
 
 
 
-
-
 export const config = {
 
 
@@ -128,7 +143,9 @@ export const config = {
 
     "/login",
 
-    "/tasks/:path*"
+    "/tasks/:path*",
+
+    "/admin/:path*"
 
   ]
 
