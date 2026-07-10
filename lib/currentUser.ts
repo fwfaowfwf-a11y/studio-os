@@ -2,20 +2,22 @@ import { Employee } from "@/types/employee";
 
 
 const STORAGE_KEY =
-  "studio_current_user";
+"studio_current_user";
 
 
 
 // 保存当前用户
 
 export function setCurrentUser(
-  user: Employee
+  user:Employee
 ){
 
+
   if(
-    typeof window === "undefined"
+    typeof window==="undefined"
   )
-    return;
+  return;
+
 
 
   localStorage.setItem(
@@ -23,7 +25,17 @@ export function setCurrentUser(
     JSON.stringify(user)
   );
 
+
+
+  document.cookie =
+    `studio_current_user=${encodeURIComponent(
+      JSON.stringify(user)
+    )}; path=/; max-age=2592000`;
+
+
+
 }
+
 
 
 
@@ -31,76 +43,72 @@ export function setCurrentUser(
 // 获取当前用户
 
 export function getCurrentUser()
-: Employee | null {
+:Employee|null{
 
 
-  if(
-    typeof window === "undefined"
-  )
-    return null;
-
-
-
-  const data =
-    localStorage.getItem(
-      STORAGE_KEY
-    );
+ if(
+  typeof window==="undefined"
+ )
+ return null;
 
 
 
-  if(
-    !data
-  )
-    return null;
+ const data =
+ localStorage.getItem(
+  STORAGE_KEY
+ );
 
 
 
-  try {
-
-
-    const user =
-      JSON.parse(data);
+ if(!data)
+ return null;
 
 
 
-    return user as Employee;
+ try{
+
+
+  return JSON.parse(
+    data
+  ) as Employee;
 
 
 
-  } catch(error){
+ }catch{
 
 
-    console.error(
-      "读取用户失败:",
-      error
-    );
+  return null;
 
 
-    return null;
+ }
 
-
-  }
 
 }
 
 
 
 
-// 清除当前用户
+
+// 清除用户
 
 export function clearCurrentUser(){
 
 
-  if(
-    typeof window === "undefined"
-  )
-    return;
+ if(
+ typeof window==="undefined"
+ )
+ return;
 
 
 
-  localStorage.removeItem(
-    STORAGE_KEY
-  );
+ localStorage.removeItem(
+  STORAGE_KEY
+ );
+
+
+
+ document.cookie =
+ "studio_current_user=; path=/; max-age=0";
 
 
 }

@@ -10,7 +10,7 @@ import type {
 
 
 
-export function middleware(
+export function proxy(
   request: NextRequest
 ){
 
@@ -29,9 +29,7 @@ export function middleware(
 
 
 
-  // =====================
-  // 登录页面
-  // =====================
+  // 登录页
 
   if(
 
@@ -58,16 +56,11 @@ export function middleware(
 
 
 
-
-  // =====================
   // 任务页面
-  // =====================
 
   if(
 
-    pathname.startsWith(
-      "/tasks"
-    )
+    pathname.startsWith("/tasks")
 
     &&
 
@@ -90,17 +83,11 @@ export function middleware(
 
 
 
-
-
-  // =====================
   // 管理后台
-  // =====================
 
   if(
 
-    pathname.startsWith(
-      "/admin"
-    )
+    pathname.startsWith("/admin")
 
     &&
 
@@ -118,8 +105,6 @@ export function middleware(
     );
 
   }
-
-
 
 
 
@@ -127,9 +112,7 @@ export function middleware(
 
   return NextResponse.next();
 
-
 }
-
 
 
 
