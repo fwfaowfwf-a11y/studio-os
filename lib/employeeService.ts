@@ -4,42 +4,71 @@ import { Employee } from "@/types/employee";
 
 
 
-export async function getEmployees(){
+export async function getEmployees(): Promise<Employee[]> {
 
-  const {data,error}=
 
-    await supabase
+  console.log(
+    "开始获取员工列表..."
+  );
 
-      .from("employees")
 
-      .select("*")
 
-      .eq(
-        "active",
-        true
-      )
+  const {
+    data,
+    error
+  } = await supabase
 
-      .order(
-        "created_at",
-        {
-          ascending:false
-        }
-      );
+    .from("employees")
+
+    .select("*")
+
+    .eq(
+      "active",
+      true
+    )
+
+    .order(
+      "created_at",
+      {
+        ascending:false
+      }
+    );
+
+
+
+
+  console.log(
+    "员工查询结果:",
+    {
+      data,
+      error
+    }
+  );
+
+
 
 
 
   if(error){
+
 
     console.error(
       "获取员工失败:",
       error
     );
 
+
     return [];
 
   }
 
 
-  return data as Employee[];
+
+
+
+  return (
+    data ?? []
+  ) as Employee[];
+
 
 }
